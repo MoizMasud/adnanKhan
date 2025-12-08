@@ -1,0 +1,13 @@
+---
+import MainLayout from '../layouts/main.astro';
+import ListingsHero from '../components/ListingsHero';
+import FeaturedListings from '../components/FeaturedListings';
+import PageLoader from '../components/PageLoader';
+---
+
+<MainLayout pageClass="listings">
+  <PageLoader client:only="react">
+    <ListingsHero client:only="react" />
+    <FeaturedListings client:only="react" />
+  </PageLoader>
+</MainLayout>
