@@ -1,0 +1,15 @@
+---
+import MainLayout from '../layouts/main.astro';
+import AboutHero from '../components/AboutHero';
+import AboutStory from '../components/AboutStory';
+import AboutExpertise from '../components/AboutExpertise';
+import PageLoader from '../components/PageLoader';
+---
+
+<MainLayout pageClass="about">
+  <PageLoader client:only="react">
+    <AboutHero client:only="react" />
+    <AboutStory client:only="react" />
+    <AboutExpertise client:only="react" />
+  </PageLoader>
+</MainLayout>

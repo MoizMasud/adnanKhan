@@ -1,0 +1,15 @@
+---
+import MainLayout from '../layouts/main.astro';
+import SellersHero from '../components/SellersHero';
+import SellersValuation from '../components/SellersValuation';
+import SellersProcess from '../components/SellersProcess';
+import PageLoader from '../components/PageLoader';
+---
+
+<MainLayout pageClass="sellers">
+  <PageLoader client:only="react">
+    <SellersHero client:only="react" />
+    <SellersProcess client:only="react" />
+    <SellersValuation client:only="react" />
+  </PageLoader>
+</MainLayout>

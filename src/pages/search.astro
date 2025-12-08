@@ -1,0 +1,37 @@
+---
+import MainLayout from '../layouts/main.astro';
+import PropertySearch from '../components/PropertySearch';
+import PageLoader from '../components/PageLoader';
+---
+
+<MainLayout pageClass="search">
+  <PageLoader client:only="react">
+    <!-- Hero Section - Compact on mobile -->
+    <section class="relative h-[50vh] md:h-[70vh] w-full overflow-hidden">
+      <div class="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?q=80&w=3870&auto=format&fit=crop"
+          alt="Property Search"
+          class="h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a131e]/70 via-[#0a131e]/50 to-[#0a131e]/80" />
+      </div>
+
+      <div class="relative z-10 flex h-full flex-col items-center justify-center px-4 sm:px-6 text-center text-white">
+        <span class="font-body text-xs sm:text-sm tracking-widest text-[#b7b7b7] uppercase mb-3 sm:mb-6">
+          Explore Properties
+        </span>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light tracking-wide mb-4 sm:mb-8 text-white">
+          Discover Your Perfect Match
+        </h1>
+        <div class="h-px w-16 sm:w-24 bg-[#b7b7b7] mb-4 sm:mb-8" />
+        <p class="font-body text-sm sm:text-base md:text-lg lg:text-xl font-light max-w-3xl text-white/90 mb-4 sm:mb-10 px-4">
+          Search through thousands of properties in Cambridge and surrounding areas
+        </p>
+      </div>
+    </section>
+
+    <!-- Search Section -->
+    <PropertySearch client:only="react" />
+  </PageLoader>
+</MainLayout>

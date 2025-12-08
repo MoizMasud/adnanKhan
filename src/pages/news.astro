@@ -1,0 +1,347 @@
+---
+import MainLayout from '../layouts/main.astro';
+import NewsArticle from '../components/NewsArticle';
+import MarketChart from '../components/MarketChart';
+import { baseUrl } from '../lib/base-url';
+
+type NewsArticle = {
+  title: string;
+  pubDate: string;
+  excerpt: string;
+  source: 'Cambridge' | 'Ontario' | 'Market Insights';
+  link?: string;
+  slug?: string;
+};
+
+// Fetch dynamic news from API
+let articles: NewsArticle[] = [];
+let useFallback = false;
+
+try {
+  const res = await fetch(`${baseUrl}/api/news`);
+  const json = await res.json() as { data?: NewsArticle[] };
+  articles = json?.data ?? [];
+  
+  // If API returns empty or fails, use fallback
+  if (!articles || articles.length === 0) {
+    useFallback = true;
+  }
+} catch (error) {
+  console.error('Error fetching news:', error);
+  useFallback = true;
+}
+
+// Fallback news data - used if API fails or returns empty
+const fallbackNewsArticles: NewsArticle[] = [
+  {
+    title: "Cambridge Housing Market Shows Strong Growth in Q4 2024",
+    pubDate: "December 1, 2024",
+    excerpt: "The Cambridge real estate market continues to show resilience with a 5.2% increase in average home prices compared to last quarter. Single-family homes in the Hespeler and Preston areas are seeing particularly strong demand from families relocating from the GTA.",
+    source: "Cambridge",
+    link: "#",
+    slug: "cambridge-housing-market-q4-2024"
+  },
+  {
+    title: "Ontario's New Housing Supply Strategy: What It Means for Buyers",
+    pubDate: "November 20, 2024",
+    excerpt: "The Ontario government has announced a comprehensive housing supply strategy aimed at increasing housing affordability across the province. The initiative includes streamlined approvals, density bonuses, and incentives for developers to build more affordable units.",
+    source: "Ontario",
+    link: "#",
+    slug: "ontario-housing-supply-strategy-2024"
+  },
+  {
+    title: "Interest Rate Forecast: Bank of Canada's Latest Signals",
+    pubDate: "November 15, 2024",
+    excerpt: "Recent Bank of Canada announcements suggest a more dovish stance on interest rates moving into 2025. Economists predict potential rate cuts as inflation shows signs of stabilizing, which could boost housing affordability across Ontario.",
+    source: "Market Insights",
+    link: "#",
+    slug: "interest-rate-forecast-2024"
+  },
+  {
+    title: "New Development Projects Approved for Cambridge Core",
+    pubDate: "November 10, 2024",
+    excerpt: "City council has approved three major residential developments in downtown Cambridge, bringing over 500 new housing units to the area. The projects focus on mixed-use developments with ground-floor retail spaces, aimed at revitalizing the downtown core and creating walkable neighborhoods.",
+    source: "Cambridge",
+    link: "#",
+    slug: "cambridge-core-developments-2024"
+  },
+  {
+    title: "Ontario Leads Nation in Housing Starts for Third Consecutive Quarter",
+    pubDate: "November 3, 2024",
+    excerpt: "Statistics Canada reports that Ontario continues to lead the country in new housing construction, with housing starts up 12% year-over-year. The GTA and surrounding regions, including Waterloo Region, are seeing particularly strong construction activity.",
+    source: "Ontario",
+    link: "#",
+    slug: "ontario-housing-starts-q3-2024"
+  },
+  {
+    title: "Cambridge Ranks High in Ontario Quality of Life Index",
+    pubDate: "October 28, 2024",
+    excerpt: "A new comprehensive study places Cambridge among the top 10 Ontario cities for quality of life, citing excellent schools, abundant parks, low crime rates, and growing employment opportunities. This recognition is attracting more families to the area from across the province.",
+    source: "Cambridge",
+    link: "#",
+    slug: "cambridge-quality-of-life-ranking-2024"
+  },
+  {
+    title: "Understanding Ontario's Land Transfer Tax: A Complete Guide",
+    pubDate: "October 20, 2024",
+    excerpt: "With housing transactions on the rise, understanding Ontario's land transfer tax is crucial for buyers. This comprehensive guide breaks down the provincial tax structure, available rebates for first-time buyers, and strategies to minimize costs when purchasing your next home.",
+    source: "Market Insights",
+    link: "#",
+    slug: "ontario-land-transfer-tax-guide-2024"
+  },
+  {
+    title: "Condo Market in Cambridge Sees Increased Activity",
+    pubDate: "October 15, 2024",
+    excerpt: "The condominium sector in Cambridge is experiencing renewed interest, particularly from downsizers and first-time buyers. Average condo prices have increased by 3.8% year-over-year, while inventory remains relatively low, creating a seller's market for quality units.",
+    source: "Cambridge",
+    link: "#",
+    slug: "cambridge-condo-market-october-2024"
+  },
+  {
+    title: "Ontario's Real Estate Market Diversity: Regional Variations Explained",
+    pubDate: "October 5, 2024",
+    excerpt: "While the GTA dominates headlines, Ontario's real estate market shows significant regional variation. From Ottawa's tech boom to Windsor's affordability and Waterloo Region's steady growth, each market presents unique opportunities and challenges for buyers and investors.",
+    source: "Ontario",
+    link: "#",
+    slug: "ontario-regional-market-variations-2024"
+  },
+  {
+    title: "Cambridge Commercial Real Estate Expansion Boosts Residential Demand",
+    pubDate: "October 1, 2024",
+    excerpt: "Several major retailers and tech companies are expanding their presence in Cambridge, creating new jobs and boosting the local economy. This economic growth is expected to positively impact residential real estate as more professionals seek housing near their workplaces.",
+    source: "Cambridge",
+    link: "#",
+    slug: "cambridge-commercial-expansion-2024"
+  },
+  {
+    title: "Mortgage Stress Test Changes: Impact on Ontario Buyers",
+    pubDate: "September 25, 2024",
+    excerpt: "Recent adjustments to Canada's mortgage stress test rules are making it easier for some buyers to qualify for home financing. The changes, aimed at supporting housing affordability, allow more flexibility while maintaining financial stability standards.",
+    source: "Market Insights",
+    link: "#",
+    slug: "mortgage-stress-test-changes-2024"
+  },
+  {
+    title: "Cambridge Public Transit Expansion Plans Unveiled",
+    pubDate: "September 15, 2024",
+    excerpt: "The City of Cambridge has revealed ambitious plans to expand public transit connections, including enhanced LRT integration with Kitchener-Waterloo and new bus rapid transit routes. The improvements are expected to boost property values in well-connected neighborhoods.",
+    source: "Cambridge",
+    link: "#",
+    slug: "cambridge-transit-expansion-2024"
+  }
+];
+
+// Use fallback if needed
+const newsArticles: NewsArticle[] = useFallback ? fallbackNewsArticles : articles;
+
+// Helper function to format date
+function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  } catch {
+    return dateString;
+  }
+}
+
+// Helper to generate slug from title
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+---
+
+<MainLayout pageClass="news-page">
+  <main class="bg-white">
+    <!-- Hero Section -->
+    <section class="relative h-[50vh] md:h-[70vh] w-full overflow-hidden">
+      <div class="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop"
+          alt="Real Estate News"
+          class="h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a131e]/70 via-[#0a131e]/50 to-[#0a131e]/80" />
+      </div>
+
+      <div class="relative z-10 flex h-full flex-col items-center justify-center px-4 sm:px-6 text-center animate-on-scroll animate-fade-up">
+        <span class="font-body text-xs sm:text-sm tracking-widest uppercase mb-4 sm:mb-6" style="color: #b7b7b7;">
+          Market Insights & Analysis
+        </span>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light tracking-wide mb-4 sm:mb-8" style="color: #ffffff;">
+          Real Estate News
+        </h1>
+        <div class="h-px w-16 sm:w-24 mb-4 sm:mb-8" style="background-color: #b7b7b7;" />
+        <p class="font-body text-sm sm:text-base md:text-lg lg:text-xl font-light max-w-3xl px-4" style="color: rgba(255, 255, 255, 0.9);">
+          Stay informed with the latest real estate trends and market analysis for Cambridge and Ontario
+        </p>
+      </div>
+    </section>
+
+    <!-- Market Chart Section -->
+    <section class="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="animate-on-scroll animate-scale">
+          <MarketChart client:only="react" />
+        </div>
+      </div>
+    </section>
+
+    <!-- News Articles List -->
+    <section class="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10 sm:mb-12 md:mb-16 animate-on-scroll animate-fade-up">
+          <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#0a131e] mb-4 sm:mb-5 px-4">
+            Latest Real Estate News
+          </h2>
+          <p class="font-body text-sm sm:text-base lg:text-lg text-[#6c757d] max-w-2xl mx-auto px-4">
+            Expert insights and analysis on Cambridge and Ontario's real estate markets
+          </p>
+        </div>
+
+        <div class="space-y-5 sm:space-y-6 md:space-y-8">
+          {newsArticles.map((article: NewsArticle, index: number) => (
+            <div 
+              class="animate-on-scroll animate-fade-up animate-delay-100"
+              style={`transition-delay: ${index * 60}ms;`}
+            >
+              <NewsArticle
+                title={article.title}
+                date={formatDate(article.pubDate)}
+                excerpt={article.excerpt}
+                category={article.source}
+                slug={article.link || article.slug || generateSlug(article.title)}
+                client:only="react"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative h-[50vh] md:h-[60vh] w-full overflow-hidden">
+      <div class="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop"
+          alt="Modern home interior"
+          class="h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a131e]/70 via-[#0a131e]/60 to-[#0a131e]/80" />
+      </div>
+
+      <div class="relative z-20 flex h-full flex-col items-center justify-center px-4 sm:px-6 text-center animate-on-scroll animate-fade-up">
+        <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light tracking-wide mb-4 sm:mb-6 px-4" style="color: #ffffff;">
+          Want Personalized Market Insights?
+        </h2>
+        <div class="h-px w-16 sm:w-24 mb-4 sm:mb-6" style="background-color: rgba(255, 255, 255, 0.5);" />
+        <p class="font-body text-sm sm:text-base md:text-lg lg:text-xl font-light max-w-3xl mb-6 sm:mb-8 px-4" style="color: rgba(255, 255, 255, 0.9);">
+          Get customized analysis for your specific neighborhood or property type
+        </p>
+        <a 
+          href="/contact" 
+          class="contact-cta-button inline-block font-button text-xs sm:text-sm tracking-wider px-8 sm:px-10 py-3.5 sm:py-4 rounded-md transition-all duration-300 hover:scale-105"
+        >
+          CONTACT ADNAN TODAY
+        </a>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .contact-cta-button {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white !important;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-cta-button:hover {
+    background-color: white !important;
+    color: #0a131e !important;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  /* Classy scroll animations */
+  .animate-on-scroll {
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+  }
+
+  .animate-fade-up {
+    transform: translateY(30px);
+  }
+
+  .animate-fade-up.visible {
+    transform: translateY(0);
+  }
+
+  .animate-scale {
+    transform: scale(0.97);
+  }
+
+  .animate-scale.visible {
+    transform: scale(1);
+  }
+
+  /* Stagger delays for elegant cascading effect */
+  .animate-delay-100 {
+    transition-duration: 0.7s;
+  }
+</style>
+
+<script>
+  // Elegant intersection observer for classy scroll animations
+  function initScrollAnimations() {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -80px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          
+          // Add visible class with a slight delay for smoothness
+          requestAnimationFrame(() => {
+            element.classList.add('visible');
+          });
+          
+          // Unobserve after animating to improve performance
+          observer.unobserve(element);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with animation classes
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollAnimations);
+  } else {
+    initScrollAnimations();
+  }
+</script>

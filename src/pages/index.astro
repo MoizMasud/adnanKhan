@@ -1,0 +1,14 @@
+---
+import MainLayout from '../layouts/main.astro';
+import Hero from '../components/Hero';
+import AboutPreview from '../components/AboutPreview';
+import LogoCarousel from '../components/LogoCarousel';
+import Testimonials from '../components/Testimonials';
+---
+
+<MainLayout pageClass="home">
+<Hero client:only="react" />
+<AboutPreview client:only="react" />
+<LogoCarousel client:only="react" />
+<Testimonials client:only="react" />
+</MainLayout>
