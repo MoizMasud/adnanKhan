@@ -175,7 +175,7 @@ export async function POST({ request }) {
       process.env.FORM_RECIPIENT || "adnankhanrealtor@gmail.com";
 
     const result = await resend.emails.send({
-      from: "Website Leads <leads@sitrixx.com>",
+      from: "Adnan Khan Realty <leads@adnankhanrealty.com>",
       to: toEmail,
       replyTo: email,
       subject: emailSubject,
