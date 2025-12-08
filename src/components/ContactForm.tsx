@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle2, XCircle } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/use-scroll-animation';
 import { baseUrl } from '../lib/base-url';
 
@@ -210,14 +210,34 @@ const ContactForm = () => {
               </Button>
 
               {submitStatus === 'success' && (
-                <div className="p-3 sm:p-4 bg-green-50 border border-green-200 text-green-800 text-center font-body text-sm">
-                  Thank you! Your message has been sent successfully.
+                <div className="mt-6 p-6 sm:p-8 bg-white border-l-4 border-[#0a131e] shadow-sm animate-fadeIn">
+                  <div className="flex items-start gap-4">
+                    <CheckCircle2 className="w-6 h-6 sm:w-7 sm:h-7 text-[#0a131e] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-heading text-lg sm:text-xl text-[#0a131e] mb-2">
+                        Message Sent Successfully
+                      </h3>
+                      <p className="font-body text-sm sm:text-base text-gray-600 leading-relaxed">
+                        Thank you for reaching out. I will review your message and get back to you within 24 hours.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {submitStatus === 'error' && (
-                <div className="p-3 sm:p-4 bg-red-50 border border-red-200 text-red-800 text-center font-body text-sm">
-                  Something went wrong. Please try again.
+                <div className="mt-6 p-6 sm:p-8 bg-white border-l-4 border-red-600 shadow-sm animate-fadeIn">
+                  <div className="flex items-start gap-4">
+                    <XCircle className="w-6 h-6 sm:w-7 sm:h-7 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="font-heading text-lg sm:text-xl text-[#0a131e] mb-2">
+                        Unable to Send Message
+                      </h3>
+                      <p className="font-body text-sm sm:text-base text-gray-600 leading-relaxed">
+                        We encountered an issue sending your message. Please try again or contact me directly via phone or email.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </form>
