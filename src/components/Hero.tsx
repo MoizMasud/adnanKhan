@@ -129,7 +129,7 @@ const Hero = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: '0 0.267em',
-                fontFamily: '"Made Saonara", serif'
+                fontFamily: 'var(--heading-font)'
               }}
             >
               <span style={{ 
