@@ -73,7 +73,7 @@ const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
       case 'link':
         return (
           <button
-            className={`no-underline ${className}`}
+            className={`text-left no-underline bg-transparent border-0 p-0 cursor-pointer ${className}`}
           >
             Mortgage Calculator
           </button>
