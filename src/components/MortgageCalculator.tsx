@@ -14,11 +14,13 @@ import { Button } from './ui/button';
 interface MortgageCalculatorProps {
   variant?: 'button' | 'icon' | 'link';
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({ 
   variant = 'button',
-  className = '' 
+  className = '',
+  style = {}
 }) => {
   const [homePrice, setHomePrice] = useState<string>('500000');
   const [downPayment, setDownPayment] = useState<string>('100000');
@@ -73,7 +75,8 @@ const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
       case 'link':
         return (
           <button
-            className={`text-left no-underline bg-transparent border-0 p-0 cursor-pointer ${className}`}
+            className={className}
+            style={style}
           >
             Mortgage Calculator
           </button>

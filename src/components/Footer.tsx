@@ -91,10 +91,11 @@ const Footer = () => {
                 <MortgageCalculator 
                   variant="link" 
                   className="font-body text-sm text-gray-400 hover:text-[#b7b7b7] transition-colors !no-underline"
+                  style={{ color: 'var(--color-gray-400)' }}
                 />
               </li>
               <li>
-                <a href={`${baseUrl}/tools`} className="font-body text-sm text-gray-400 hover:text-[#b7b7b7] transition-colors">
+                <a href={`${baseUrl}/contact`} className="font-body text-sm text-gray-400 hover:text-[#b7b7b7] transition-colors">
                   Home Evaluation
                 </a>
               </li>
