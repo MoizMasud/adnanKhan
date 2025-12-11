@@ -4,6 +4,8 @@ import '../site-components/global.css';
 import '../styles/global.css';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import LeadCapturePopup from '../components/LeadCapturePopup';
+import { Toaster } from '../components/ui/sonner';
 
 const { pageClass = '' } = Astro.props;
 ---
@@ -49,6 +51,8 @@ overflow-x: hidden;
 <Navigation client:load />
 <slot />
 <Footer client:only="react" />
+<LeadCapturePopup client:only="react" delaySeconds={5} />
+<Toaster client:only="react" />
 </body>
 </html>
 
