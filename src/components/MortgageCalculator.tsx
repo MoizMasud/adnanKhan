@@ -81,10 +81,10 @@ const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
       default:
         return (
           <Button
-            className={`font-button bg-[#0a131e] text-white hover:bg-[#1a2330] ${className}`}
+            className={`font-button bg-[#0a131e] hover:bg-[#1a2330] ${className}`}
           >
-            <Calculator size={18} className="mr-2 text-white" />
-            <span className="text-white">Calculate Mortgage</span>
+            <Calculator size={18} className="mr-2 text-white !fill-white" />
+            <span className="!text-white font-medium">Calculate Mortgage</span>
           </Button>
         );
     }
@@ -179,9 +179,9 @@ const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
 
           <Button 
             type="submit" 
-            className="w-full font-button bg-[#0a131e] hover:bg-[#1a2330] !text-white"
+            className="w-full font-button bg-[#0a131e] hover:bg-[#1a2330]"
           >
-            <span className="text-white">Calculate Payment</span>
+            <span className="!text-white font-medium">Calculate Payment</span>
           </Button>
 
           {monthlyPayment !== null && (
