@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const slides = [
   {
@@ -42,6 +42,11 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [fontSize, setFontSize] = useState(2.9);
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>();
+  const lastWidthRef = useRef<number>(0);
 
   useEffect(() => {
     // Check if mobile
@@ -72,6 +77,64 @@ const Hero = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Dynamic font size adjustment with debouncing
+  useEffect(() => {
+    const adjustFontSize = () => {
+      if (!textRef.current || !containerRef.current || isMobile) return;
+
+      const containerWidth = containerRef.current.offsetWidth;
+      
+      // Only adjust if width actually changed
+      if (Math.abs(containerWidth - lastWidthRef.current) < 5) return;
+      lastWidthRef.current = containerWidth;
+
+      const maxWidth = containerWidth * 0.95;
+      let currentSize = 2.9;
+      
+      // Temporarily hide to prevent flickering during measurement
+      const originalTransition = textRef.current.style.transition;
+      textRef.current.style.transition = 'none';
+      textRef.current.style.fontSize = `${currentSize}em`;
+      
+      // Force reflow
+      textRef.current.offsetWidth;
+      
+      // Keep reducing font size until text fits
+      while (textRef.current.scrollWidth > maxWidth && currentSize > 1) {
+        currentSize -= 0.1;
+        textRef.current.style.fontSize = `${currentSize}em`;
+        textRef.current.offsetWidth; // Force reflow
+      }
+      
+      // Re-enable transition
+      requestAnimationFrame(() => {
+        if (textRef.current) {
+          textRef.current.style.transition = originalTransition;
+          setFontSize(currentSize);
+        }
+      });
+    };
+
+    const debouncedAdjust = () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      rafRef.current = requestAnimationFrame(adjustFontSize);
+    };
+
+    // Initial adjustment
+    adjustFontSize();
+    
+    window.addEventListener('resize', debouncedAdjust);
+
+    return () => {
+      window.removeEventListener('resize', debouncedAdjust);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [isMobile]);
 
   return (
     <section className="relative w-full overflow-hidden bg-gray-900 h-screen">
@@ -113,23 +176,34 @@ const Hero = () => {
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           {/* City Names - Visible at top, fades out on scroll */}
           <div 
+            ref={containerRef}
             className={`transition-opacity duration-500 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
-            style={{ paddingTop: '75vh' }}
+            style={{ 
+              paddingTop: '75vh',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
           >
             <p 
+              ref={textRef}
               style={{
-                fontSize: '3.4em',
+                fontSize: `${fontSize}em`,
                 fontWeight: 300,
                 lineHeight: 1.1,
                 letterSpacing: '0.08em',
                 textAlign: 'center',
                 textShadow: '0 0 0.556em rgba(0, 0, 0, 0.25), 0 0 0.556em rgba(0, 0, 0, 0.25)',
-                display: 'flex',
-                flexWrap: 'wrap',
+                display: 'inline-flex',
+                flexWrap: 'nowrap',
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: '0 0.267em',
-                fontFamily: 'var(--heading-font)'
+                fontFamily: 'var(--heading-font)',
+                whiteSpace: 'nowrap',
+                margin: 0,
+                willChange: 'font-size'
               }}
             >
               <span style={{ 
