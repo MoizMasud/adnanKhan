@@ -118,10 +118,10 @@ const Hero = () => {
           >
             <p 
               style={{
-                fontSize: '2.4em',
+                fontSize: '3.4em',
                 fontWeight: 300,
-                lineHeight: 0.889,
-                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                letterSpacing: '0.08em',
                 textAlign: 'center',
                 textShadow: '0 0 0.556em rgba(0, 0, 0, 0.25), 0 0 0.556em rgba(0, 0, 0, 0.25)',
                 display: 'flex',
@@ -132,17 +132,86 @@ const Hero = () => {
                 fontFamily: '"Made Saonara", serif'
               }}
             >
-              <span style={{ color: '#ffffff' }}>CAMBRIDGE</span>
-              <span style={{ fontWeight: 100, color: '#999999', fontSize: '0.8em', margin: '0 0.5em' }}>|</span>
-              <span style={{ color: '#ffffff' }}>WATERLOO</span>
-              <span style={{ fontWeight: 100, color: '#999999', fontSize: '0.8em', margin: '0 0.5em' }}>|</span>
-              <span style={{ color: '#ffffff' }}>TORONTO</span>
-              <span style={{ fontWeight: 100, color: '#999999', fontSize: '0.8em', margin: '0 0.5em' }}>|</span>
-              <span style={{ color: '#ffffff' }}>OAKVILLE</span>
-              <span style={{ fontWeight: 100, color: '#999999', fontSize: '0.8em', margin: '0 0.5em' }}>|</span>
-              <span style={{ color: '#ffffff' }}>LONDON</span>
-              <span style={{ fontWeight: 100, color: '#999999', fontSize: '0.8em', margin: '0 0.5em' }}>|</span>
-              <span style={{ color: '#ffffff' }}>MISSISSAUGA</span>
+              <span style={{ 
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>CAMBRIDGE</span>
+              <span style={{ 
+                fontWeight: 100, 
+                color: '#999999', 
+                fontSize: '1.2em',
+                margin: '0 0.5em',
+                marginBottom: '0.5rem',
+                lineHeight: 1,
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>|</span>
+              <span style={{ 
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>WATERLOO</span>
+              <span style={{ 
+                fontWeight: 100, 
+                color: '#999999', 
+                fontSize: '1.2em',
+                margin: '0 0.5em',
+                marginBottom: '0.5rem',
+                lineHeight: 1,
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>|</span>
+              <span style={{ 
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>TORONTO</span>
+              <span style={{ 
+                fontWeight: 100, 
+                color: '#999999', 
+                fontSize: '1.2em',
+                margin: '0 0.5em',
+                marginBottom: '0.5rem',
+                lineHeight: 1,
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>|</span>
+              <span style={{ 
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>OAKVILLE</span>
+              <span style={{ 
+                fontWeight: 100, 
+                color: '#999999', 
+                fontSize: '1.2em',
+                margin: '0 0.5em',
+                marginBottom: '0.5rem',
+                lineHeight: 1,
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>|</span>
+              <span style={{ 
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>LONDON</span>
+              <span style={{ 
+                fontWeight: 100, 
+                color: '#999999', 
+                fontSize: '1.2em',
+                margin: '0 0.5em',
+                marginBottom: '0.5rem',
+                lineHeight: 1,
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>|</span>
+              <span style={{ 
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}>MISSISSAUGA</span>
             </p>
           </div>
 
